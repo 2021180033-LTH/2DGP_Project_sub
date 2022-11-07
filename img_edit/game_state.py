@@ -1,7 +1,8 @@
 from pico2d import *
 import game_framework
-import map1
-import map2
+from map1 import Map1
+from map2 import Map2
+from map3 import Map3
 from ball import Ball
 
 WINDOW_WIDTH = 800
@@ -11,6 +12,7 @@ running = True
 ball = None
 first_map = None
 second_map = None
+third_map = None
 
 
 def handle_events():
@@ -25,16 +27,17 @@ def handle_events():
 
 
 def enter():
-    global ball, running, first_map, second_map
+    global ball, running, first_map, second_map, third_map
     ball = Ball()
-    first_map = map1.Map1()
-    second_map = map2.Map2()
+    first_map = Map1()
+    second_map = Map2()
+    third_map = Map3()
     running = True
 
 
 def exit():
-    global ball, first_map, second_map
-    del ball, first_map, second_map
+    global ball, first_map, second_map, third_map
+    del ball, first_map, second_map, third_map
 
 
 def update():
@@ -44,7 +47,8 @@ def update():
 def draw_world():
     ball.draw()
     # first_map.draw()
-    second_map.draw()
+    # second_map.draw()
+    third_map.draw()
 
 
 def draw():

@@ -9,6 +9,7 @@ class Ball:
         self.image = load_image("ball.png")
         self.x, self.y = 165, 200  # map1 xy
         self.x, self.y = 170, 346  # map2 xy
+        self.x, self.y = 50, 490  # map3 xy
         self.frame = 0
         self.isJump = 0
         self.jump_progress_v, self.jump_g = 12, 1
