@@ -31,6 +31,7 @@ def handle_events():
 def enter():
     global ball, running, first_map, star
     ball = Ball()
+    ball.x, ball.y = 165, 200
     first_map = Map1()
     star = Star()
     star.x_st, star.y_st = 630, 210

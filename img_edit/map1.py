@@ -3,10 +3,10 @@ from pico2d import *
 
 class Map1:
     def __init__(self):
-        self.image1 = load_image("vertex_steel_block.png")
-        self.image2 = load_image("vertical_steel_block.png")
-        self.image3 = load_image("vertical_steel_block.png")
-        self.image4 = load_image("star.png")
+        self.image1 = load_image("image/vertex_steel_block.png")
+        self.image2 = load_image("image/vertical_steel_block.png")
+        self.image3 = load_image("image/vertical_steel_block.png")
+        self.image4 = load_image("image/star.png")
         self.x_h, self.y_h = 400, 180
         self.x_v1, self.y_v = 138, 253
         self.x_v2 = 661.5
