@@ -1,17 +1,25 @@
 from pico2d import *
+import game_world
 
 
 class Bb:
+    image = None
     def __init__(self):
-        self.bbl1 = load_image("breakable_block.png")
-        self.bbl2 = load_image("breakable_block.png")
-        self.bbl3 = load_image("breakable_block.png")
+        if Bb.image is None:
+            Bb.image = load_image("image/breakable_block.png")
 
-        self.x_bbl1, self.y_bbl1 = 490, 200
-        self.x_bbl2, self.y_bbl2 = 525, 75
-        self.x_bbl3, self.y_bbl3 = 610, 50
+        self.x_bbl, self.y_bbl = 0, 0
 
     def draw(self):
-        self.bbl1.clip_draw(0, 0, 32, 32, self.x_bbl1, self.y_bbl1)
-        self.bbl2.clip_draw(0, 0, 32, 32, self.x_bbl2, self.y_bbl2)
-        self.bbl3.clip_draw(0, 0, 32, 32, self.x_bbl3, self.y_bbl3)
+        self.image.clip_draw(0, 0, 32, 32, self.x_bbl, self.y_bbl)
+        draw_rectangle(*self.get_bb())
+
+    def update(self):
+        pass
+
+    def get_bb(self):
+        return self.x_bbl - 16, self.y_bbl - 16, self.x_bbl + 16, self.y_bbl + 16
+
+    def handle_collision(self, other, group):
+        if group == 'ball:bbl':
+            game_world.remove_object(self)

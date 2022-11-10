@@ -4,7 +4,8 @@ import game_world
 class Star:
     def __init__(self):
         self.num = 0
-        self.image4 = load_image("star.png")
+        self.image4 = load_image("image/star.png")
+        self.x_st, self.y_st = 0, 0
 
     def draw(self):
         self.image4.clip_draw(0, 0, 32, 32, self.x_st, self.y_st)
