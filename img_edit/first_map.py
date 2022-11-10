@@ -1,9 +1,8 @@
 from pico2d import *
 import game_framework
 import game_world
+import second_map
 from map1 import Map1
-from map2 import Map2
-from map3 import Map3
 from ball import Ball
 from star import Star
 
@@ -13,8 +12,6 @@ WINDOW_HEIGHT = 600
 running = True
 ball = None
 first_map = None
-second_map = None
-third_map = None
 star = None
 
 
@@ -25,17 +22,18 @@ def handle_events():
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.quit()
+        elif star.num == 1:
+            game_framework.change_state(second_map)
         else:
             ball.handle_event(event)
 
 
 def enter():
-    global ball, running, first_map, second_map, third_map, star
+    global ball, running, first_map, star
     ball = Ball()
     first_map = Map1()
-    second_map = Map2()
-    third_map = Map3()
     star = Star()
+    star.x_st, star.y_st = 630, 210
     running = True
     game_world.add_object(first_map, 0)
     game_world.add_object(ball, 1)
@@ -45,8 +43,6 @@ def enter():
 
 
 def exit():
-    # global ball, first_map, second_map, third_map
-    # del ball, first_map, second_map, third_map
     game_world.clear()
 
 
