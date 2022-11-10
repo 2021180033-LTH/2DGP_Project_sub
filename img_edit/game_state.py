@@ -1,9 +1,11 @@
 from pico2d import *
 import game_framework
+import game_world
 from map1 import Map1
 from map2 import Map2
 from map3 import Map3
 from ball import Ball
+from star import Star
 
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
@@ -13,6 +15,7 @@ ball = None
 first_map = None
 second_map = None
 third_map = None
+star = None
 
 
 def handle_events():
@@ -27,28 +30,40 @@ def handle_events():
 
 
 def enter():
-    global ball, running, first_map, second_map, third_map
+    global ball, running, first_map, second_map, third_map, star
     ball = Ball()
     first_map = Map1()
     second_map = Map2()
     third_map = Map3()
+    star = Star()
     running = True
+    game_world.add_object(first_map, 0)
+    game_world.add_object(ball, 1)
+    game_world.add_object(star, 1)
+
+    game_world.add_collision_group(ball, star, 'ball:star')
 
 
 def exit():
-    global ball, first_map, second_map, third_map
-    del ball, first_map, second_map, third_map
+    # global ball, first_map, second_map, third_map
+    # del ball, first_map, second_map, third_map
+    game_world.clear()
 
 
 def update():
-    ball.update()
+    for game_object in game_world.all_objects():
+        game_object.update()
+
+    for a, b, group in game_world.all_collision_pairs():
+        if collide(a, b):
+            print('COLLISION ', group)
+            a.handle_collision(b, group)
+            b.handle_collision(a, group)
 
 
 def draw_world():
-    ball.draw()
-    # first_map.draw()
-    # second_map.draw()
-    third_map.draw()
+    for game_object in game_world.all_objects():
+        game_object.draw()
 
 
 def draw():
@@ -63,6 +78,18 @@ def pause():
 
 def resume():
     pass
+
+
+def collide(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+
+    return True
 
 
 def test_self():
