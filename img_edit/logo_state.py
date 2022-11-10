@@ -9,7 +9,7 @@ logo_time = 0.0
 
 def enter():
     global image, logo_time, running
-    image = load_image('Logo_image.png')
+    image = load_image('image/Logo_image.png')
     # fill here
     pass
 
