@@ -8,8 +8,8 @@ class Ball:
     def __init__(self):
         self.image = load_image("ball.png")
         self.x, self.y = 165, 200  # map1 xy
-        self.x, self.y = 170, 346  # map2 xy
-        self.x, self.y = 50, 490  # map3 xy
+        # self.x, self.y = 170, 346  # map2 xy
+        # self.x, self.y = 50, 490  # map3 xy
         self.frame = 0
         self.isJump = 0
         self.jump_progress_v, self.jump_g = 12, 1
@@ -35,6 +35,7 @@ class Ball:
 
     def draw(self):
         self.image.clip_draw(self.frame * 100, 0, 25, 25, self.x, self.y)
+        draw_rectangle(*self.get_bb())
 
     def jump(self, j):
         self.isJump = j
@@ -54,3 +55,11 @@ class Ball:
                  dirx -= 1
             elif event.key == SDLK_LEFT:
                  dirx += 1
+
+    def get_bb(self):
+        return self.x - 13, self.y - 13, self.x + 13, self.y + 13
+
+    def handle_collision(self, other, group):
+        if group == 'ball:star':
+            pass
+
