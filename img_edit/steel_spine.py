@@ -2,6 +2,7 @@ from pico2d import *
 import game_world
 import game_framework
 import third_map
+from ball import Ball
 
 
 class Spine:
@@ -12,6 +13,7 @@ class Spine:
             Spine.image = load_image('image/steel_spine.png')
 
         self.x_spi, self.y_spi = 0, 0
+        self.ifhit = 0
 
     def draw(self):
         self.image.clip_draw(0, 0, 30, 32, self.x_spi, self.y_spi)
@@ -25,4 +27,4 @@ class Spine:
 
     def handle_collision(self, other, group):
         if group == 'ball:spine':
-            pass
+            self.ifhit = 1

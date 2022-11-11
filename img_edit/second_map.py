@@ -24,6 +24,7 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.quit()
         elif star.num == 1:
+            ball.dirx = 0
             game_framework.change_state(third_map)
         else:
             ball.handle_event(event)

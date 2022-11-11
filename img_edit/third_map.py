@@ -29,6 +29,8 @@ def handle_events():
             game_framework.quit()
         elif stars[3].num == 1:
             game_framework.change_state(title_state)
+        elif [spines[i].ifhit for i in range(5)] == 1:
+            pass
         else:
             ball.handle_event(event)
 
@@ -52,9 +54,10 @@ def enter():
     stars[3].x_st, stars[3].y_st = 750, 50
 
     bbls = [Bb() for i in range(4)]
-    bbls[0].x_bbl, bbls[0].y_bbl = 490, 200
-    bbls[1].x_bbl, bbls[1].y_bbl = 525, 75
-    bbls[2].x_bbl, bbls[2].y_bbl = 610, 50
+    bbls[0].x_bbl, bbls[0].y_bbl = 170, 500
+    bbls[1].x_bbl, bbls[1].y_bbl = 490, 200
+    bbls[2].x_bbl, bbls[2].y_bbl = 525, 75
+    bbls[3].x_bbl, bbls[3].y_bbl = 610, 50
 
     running = True
     game_world.add_object(third_map, 0)
