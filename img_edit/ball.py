@@ -1,64 +1,146 @@
 from pico2d import *
+import game_framework
+import game_world
 
-gr = 11
-dirx, diry, VELOCITY, MASS = 0, 0, 5, 5
+PIXEL_PER_METER = (10.0 / 0.1)
+RUN_SPEED_KMPH = 0.1
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000 / 60.0)
+RUN_SPEED_PPM = (RUN_SPEED_MPM * PIXEL_PER_METER)
+
+JUMP_SPEED_KMPH = 0.1
+JUMP_SPEED_MPM = (JUMP_SPEED_KMPH * 1000.0 / 60.0)
+JUMP_SPEED_PPM = (JUMP_SPEED_MPM * PIXEL_PER_METER)
+
+RD, RU, LD, LU, UD, UU = range(6)
+event_name = ['RD', 'RU', 'LD', 'LU', 'UD', 'UU']
+
+key_event_table = {(SDL_KEYDOWN, SDLK_RIGHT): RD, (SDL_KEYUP, SDLK_RIGHT): RU,
+                   (SDL_KEYDOWN, SDLK_LEFT): LD, (SDL_KEYUP, SDLK_LEFT): LU,
+                   (SDL_KEYDOWN, SDLK_UP): UD, (SDL_KEYUP, SDLK_UP): UU}
 
 
-class Ball:
-    def __init__(self):
-        self.image = load_image("image/ball.png")
-        self.x, self.y = 0, 0
+class IDLE:
+    def enter(self, event):
+        print('ENTER IDLE')
         self.frame = 0
+        self.dir = 0
+        self.isjump = False
 
-        self.isJump = 0
-        self.jump_progress_v, self.jump_g = 12, 1
-        self.jump_last_v = -12
-        self.jump_y = self.y
+    def exit(self):
+        print('EXIT IDLE')
 
-    def update(self):
-        global dirx, diry
-        self.x += dirx * 1.5
-        if self.x > 800:
-            self.x = 800
-        elif self.x < 0:
-            self.x = 0
-
-        if self.isJump > 0:
-            self.y += self.jump_progress_v
-            self.jump_progress_v = self.jump_progress_v - self.jump_g
-
-            if self.jump_last_v - 1 == self.jump_progress_v:
-                self.jump(0)
-                self.jump_progress_v = 12
-        delay(0.015)
+    def do(self):
+        if not self.jump:
+            pass
+        else:
+            self.jump_func()
+            if self.on_ground:
+                self.jump = False
+                self.y_velocity = self.jump_height
 
     def draw(self):
         self.image.clip_draw(self.frame * 100, 0, 25, 25, self.x, self.y)
         draw_rectangle(*self.get_bb())
 
-    def jump(self, j):
-        self.isJump = j
+
+class RUN:
+    def enter(self, event):
+        print('ENTER RUN')
+        if event == RD:
+            self.dir += 1
+        if event == RU:
+            self.dir -= 1
+        if event == LD:
+            self.dir -= 1
+        if event == LU:
+            self.dir += 1
+
+    def exit(self):
+        print('EXIT RUN')
+
+    def do(self):
+        self.frame = 0
+        self.x += self.dir * RUN_SPEED_PPM * game_framework.frame_time
+        self.x = clamp(0, self.x, 800)
+
+        if self.jump:
+            self.jump_func()
+            if self.on_ground:
+                self.jump = False
+                self.y_velocity = self.jump_height
+
+    def draw(self):
+        self.image.clip_draw(self.frame * 100, 0, 25, 25, self.x, self.y)
+        draw_rectangle(*self.get_bb())
+
+
+next_state = {
+    IDLE: {RD: RUN, LD: RUN, RU: RUN, LU: RUN, UD: RUN, UU: RUN},
+    RUN: {RD: IDLE, RU: IDLE, LD: IDLE, LU: IDLE, UU: RUN, UD: RUN}
+}
+
+
+class Ball:
+    image = None
+
+    def __init__(self):
+        if Ball.image is None:
+            Ball.image = load_image('image/ball.png')
+        self.x, self.y = 0, 0
+        self.frame = 0
+
+        self.jump = False
+        self.y_velocity = 2
+        self.on_ground = True
+
+        self.mass = 10
+        self.jump_height = 5
+        self.gravity = 0.05
+        self.y_velocity = self.jump_height
+
+        self.event_q = []
+        self.cur_state = IDLE
+        self.cur_state.enter(self, None)
+
+    def update(self):
+        self.cur_state.do(self)
+
+        if self.event_q:
+            event = self.event_q.pop()
+            if event == UD:
+                self.jump = True
+                self.on_ground = False
+            self.cur_state.exit(self)
+            try:
+                self.cur_state = next_state[self.cur_state][event]
+            except KeyError:
+                print('ERROR:', self.cur_state, event_name[event])
+            self.cur_state.enter(self, event)
+
+    def jump_func(self):
+        self.y += self.y_velocity * JUMP_SPEED_PPM * game_framework.frame_time
+        self.y_velocity -= self.gravity
+
+    def draw(self):
+        self.cur_state.draw(self)
+
+    def add_event(self, event):
+        self.event_q.insert(0, event)
 
     def handle_event(self, event):
-        global dirx, diry
-        if event.type == SDL_KEYDOWN:
-            if event.key == SDLK_RIGHT:
-                 dirx += 1
-            elif event.key == SDLK_LEFT:
-                 dirx -= 1
-            elif event.key == SDLK_UP:
-                if self.isJump == 0:
-                    self.jump(1)
-        elif event.type == SDL_KEYUP:
-            if event.key == SDLK_RIGHT:
-                 dirx -= 1
-            elif event.key == SDLK_LEFT:
-                 dirx += 1
+        if (event.type, event.key) in key_event_table:
+            key_event = key_event_table[(event.type, event.key)]
+            self.add_event(key_event)
 
     def get_bb(self):
-        return self.x - 13, self.y - 13, self.x + 13, self.y + 13
+        return self.x - 8, self.y - 8, self.x + 8, self.y + 8
 
     def handle_collision(self, other, group):
         if group == 'ball:star':
             pass
+        if group == 'ball:ground':
+            self.on_ground = True
+            self.y = other.y + 20
 
+        if group == 'ball:wall':
+            pass

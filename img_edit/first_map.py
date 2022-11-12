@@ -2,7 +2,8 @@ from pico2d import *
 import game_framework
 import game_world
 import second_map
-from map1 import Map1
+from map1 import Vertex
+from map1 import Vertical
 from ball import Ball
 from star import Star
 
@@ -11,7 +12,8 @@ WINDOW_HEIGHT = 600
 
 running = True
 ball = None
-first_map = None
+vertex = None
+vertical = None
 star = None
 
 
@@ -29,18 +31,29 @@ def handle_events():
 
 
 def enter():
-    global ball, running, first_map, star
+    global ball, running, vertex, vertical, star
+
     ball = Ball()
     ball.x, ball.y = 165, 200
-    first_map = Map1()
+
+    vertex = Vertex()
+
+    vertical = [Vertical() for i in range(2)]
+    vertical[0].x, vertical[0].y = 138, 253
+    vertical[1].x, vertical[1].y = 661.5, 253
+
     star = Star()
     star.x_st, star.y_st = 630, 210
     running = True
-    game_world.add_object(first_map, 0)
+
+    game_world.add_object(vertex, 0)
+    game_world.add_objects(vertical, 0)
     game_world.add_object(ball, 1)
     game_world.add_object(star, 1)
 
     game_world.add_collision_group(ball, star, 'ball:star')
+    game_world.add_collision_group(ball, vertex, 'ball:ground')
+    game_world.add_collision_group(ball, vertical, 'ball:wall')
 
 
 def exit():
