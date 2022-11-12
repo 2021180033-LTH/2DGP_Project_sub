@@ -3,7 +3,9 @@ import game_framework
 import game_world
 import title_state
 
-from map3 import Map3
+from map3 import Vertex_q
+from map3 import Vertex_h
+from map3 import Vertical
 from ball import Ball
 from star import Star
 from steel_spine import Spine
@@ -18,6 +20,9 @@ third_map = None
 stars = []
 spines = []
 bbls = []
+vertex_q = []
+vertex_h = []
+vertical = []
 
 
 def handle_events():
@@ -29,19 +34,18 @@ def handle_events():
             game_framework.quit()
         elif stars[3].num == 1:
             game_framework.change_state(title_state)
-        elif [spines[i].ifhit for i in range(5)] == 1:
+        elif [spines[i].ifhit for i in range(4)] == 1:
             pass
         else:
             ball.handle_event(event)
 
 
 def enter():
-    global ball, running, third_map, stars, spines, bbls
+    global ball, running, third_map, stars, spines, bbls, vertex_h, vertex_q, vertical
     ball = Ball()
     ball.x, ball.y = 50, 490
-    third_map = Map3()
 
-    spines = [Spine() for i in range(5)]
+    spines = [Spine() for i in range(4)]
     spines[0].x_spi, spines[0].y_spi = 140, 469
     spines[1].x_spi, spines[1].y_spi = 172, 439
     spines[2].x_spi, spines[2].y_spi = 478, 375
@@ -59,16 +63,34 @@ def enter():
     bbls[2].x_bbl, bbls[2].y_bbl = 525, 75
     bbls[3].x_bbl, bbls[3].y_bbl = 610, 50
 
+    vertex_h = [Vertex_h() for i in range(3)]
+    vertex_h[0].x, vertex_h[0].y = 326, 400
+    vertex_h[1].x, vertex_h[1].y = 665, 250
+    vertex_h[2].x, vertex_h[2].y = 325, 125
+
+    vertex_q = [Vertex_q() for i in range(2)]
+    vertex_q[0].x, vertex_q[0].y = 63, 467
+    vertex_q[1].x, vertex_q[1].y = 739, 10
+
+    vertical = [Vertical() for i in range(2)]
+    vertical[0].x, vertical[0].y = 13, 540
+    vertical[1].x, vertical[1].y = 790, 83
+
     running = True
-    game_world.add_object(third_map, 0)
     game_world.add_object(ball, 1)
     game_world.add_objects(stars, 1)
     game_world.add_objects(spines, 1)
     game_world.add_objects(bbls, 1)
+    game_world.add_objects(vertex_h, 0)
+    game_world.add_objects(vertex_q, 0)
+    game_world.add_objects(vertical, 0)
 
     game_world.add_collision_group(ball, stars, 'ball:star')
     game_world.add_collision_group(ball, bbls, 'ball:bbl')
     game_world.add_collision_group(ball, spines, 'ball:spine')
+    game_world.add_collision_group(ball, vertex_q, 'ball:ground')
+    game_world.add_collision_group(ball, vertex_h, 'ball:ground')
+    game_world.add_collision_group(ball, vertical, 'ball:wall')
 
 
 def exit():
