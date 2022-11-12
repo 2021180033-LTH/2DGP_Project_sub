@@ -1,26 +1,71 @@
 from pico2d import *
 
 
-class Map2:
-    def __init__(self):
-        self.image1 = load_image("image/half_vertex_steel_block.png")
-        self.image2 = load_image("image/quarter_vertex_steel_block.png")
-        self.image3 = load_image("image/quarter_vertex_steel_block.png")
-        self.image4 = load_image("image/vertical_steel_block.png")
-        self.image5 = load_image("image/vertical_steel_block.png")
-        self.x_hz1, self.y_hz1 = 400, 304
-        self.x_hz2, self.y_hz2 = 200, 327
-        self.x_hz3 = 600
-        self.x_vt1, self.y_vt = 150, 400
-        self.x_vt2 = 650
-        self.gap = 32
+class Vertex_h:
+    image = None
 
-    def draw(self):
-        self.image1.clip_draw(0, 0, 275, 25, self.x_hz1, self.y_hz1)
-        self.image2.clip_draw(0, 0, 125, 25, self.x_hz2, self.y_hz2)
-        self.image3.clip_draw(0, 0, 125, 25, self.x_hz3, self.y_hz2)
-        self.image4.clip_draw(0, 0, 25, 120, self.x_vt1, self.y_vt)
-        self.image5.clip_draw(0, 0, 25, 120, self.x_vt2, self.y_vt)
+    def __init__(self):
+        if Vertex_h.image is None:
+            Vertex_h.image = load_image("image/half_vertex_steel_block.png")
+        self.x, self.y = 400, 304
 
     def update(self):
         pass
+
+    def draw(self):
+        self.image.clip_draw(0, 0, 275, 25, self.x, self.y)
+        draw_rectangle(*self.get_bb())
+
+    def get_bb(self):
+        return self.x - 137.5, self.y - 12.5, self.x + 137.5, self.y + 12.5
+
+    def handle_collision(self, other, group):
+        if group == 'ball:ground':
+            pass
+
+
+class Vertex_q:
+    image = None
+
+    def __init__(self):
+        if Vertex_q.image is None:
+            Vertex_q.image = load_image("image/quarter_vertex_steel_block.png")
+        self.x, self.y = 0, 0
+
+    def update(self):
+        pass
+
+    def draw(self):
+        self.image.clip_draw(0, 0, 125, 25, self.x, self.y)
+        draw_rectangle(*self.get_bb())
+
+    def get_bb(self):
+        return self.x - 62.5, self.y - 12.5, self.x + 62.5, self.y + 12.5
+
+    def handle_collision(self, other, group):
+        if group == 'ball:ground':
+            pass
+
+
+class Vertical:
+    image = None
+
+    def __init__(self):
+        if Vertical.image is None:
+            Vertical.image = load_image("image/vertical_steel_block.png")
+
+        self.x, self.y = 0, 0
+
+    def draw(self):
+        self.image.clip_draw(0, 0, 25, 120, self.x, self.y)
+        draw_rectangle(*self.get_bb())
+
+    def update(self):
+        pass
+
+    def get_bb(self):
+        return self.x - 12.5, self.y - 60, self.x + 12.5, self.y + 60
+
+    def handle_collision(self, other, group):
+        if group == 'ball:wall':
+            pass

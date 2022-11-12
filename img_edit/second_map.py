@@ -1,9 +1,10 @@
 from pico2d import *
 import game_framework
 import game_world
-import first_map
 import third_map
-from map2 import Map2
+from map2 import Vertex_h
+from map2 import Vertex_q
+from map2 import Vertical
 from ball import Ball
 from star import Star
 
@@ -13,6 +14,9 @@ WINDOW_HEIGHT = 600
 running = True
 ball = None
 second_map = None
+vertex_h = None
+vertex_q = None
+vertical = None
 star = None
 
 
@@ -24,25 +28,39 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.quit()
         elif star.num == 1:
-            ball.dirx = 0
             game_framework.change_state(third_map)
         else:
             ball.handle_event(event)
 
 
 def enter():
-    global ball, running, second_map, star
+    global ball, running, vertex_q, vertex_h, vertical, star
     ball = Ball()
     ball.x, ball.y = 170, 346
-    second_map = Map2()
     star = Star()
     star.x_st, star.y_st = 620, 360
     running = True
-    game_world.add_object(second_map, 0)
+
+    vertex_h = Vertex_h()
+
+    vertex_q = [Vertex_q() for i in range(2)]
+    vertex_q[0].x, vertex_q[0].y = 200, 327
+    vertex_q[1].x, vertex_q[1].y = 600, 327
+
+    vertical = [Vertical() for i in range(2)]
+    vertical[0].x, vertical[0].y = 150, 400
+    vertical[1].x, vertical[1].y = 650, 400
+
     game_world.add_object(ball, 1)
     game_world.add_object(star, 1)
+    game_world.add_objects(vertex_q, 0)
+    game_world.add_object(vertex_h, 0)
+    game_world.add_objects(vertical, 0)
 
     game_world.add_collision_group(ball, star, 'ball:star')
+    game_world.add_collision_group(ball, vertex_q, 'ball:ground')
+    game_world.add_collision_group(ball, vertex_h, 'ball:ground')
+    game_world.add_collision_group(ball, vertical, 'ball:wall')
 
 
 def exit():

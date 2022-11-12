@@ -63,6 +63,7 @@ class RUN:
         self.x += self.dir * RUN_SPEED_PPM * game_framework.frame_time
         self.x = clamp(0, self.x, 800)
 
+
         if self.jump:
             self.jump_func()
             if self.on_ground:
@@ -138,9 +139,13 @@ class Ball:
     def handle_collision(self, other, group):
         if group == 'ball:star':
             pass
+
         if group == 'ball:ground':
             self.on_ground = True
             self.y = other.y + 20
 
         if group == 'ball:wall':
             pass
+
+        if group == 'ball:bbl':
+            self.on_ground = True
