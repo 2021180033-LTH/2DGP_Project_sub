@@ -24,8 +24,6 @@ def handle_events():
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.quit()
-        elif star.num == 1:
-            game_framework.change_state(second_map)
         else:
             ball.handle_event(event)
 
@@ -63,6 +61,9 @@ def exit():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+
+    if star.num == 1:
+        game_framework.change_state(second_map)
 
     for a, b, group in game_world.all_collision_pairs():
         if collide(a, b):
