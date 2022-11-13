@@ -95,7 +95,7 @@ class Ball:
         self.on_ground = True
 
         self.mass = 10
-        self.jump_height = 5
+        self.jump_height = 4
         self.gravity = 0.05
         self.y_velocity = self.jump_height
 
@@ -138,14 +138,18 @@ class Ball:
 
     def handle_collision(self, other, group):
         if group == 'ball:star':
-            pass
+            self.cur_state.enter(IDLE, None)
 
         if group == 'ball:ground':
             self.on_ground = True
             self.y = other.y + 20
 
         if group == 'ball:wall':
-            pass
+            if self.x > other.x:
+                self.x = other.x + 24
+            else:
+                self.x = min(other.x - 24, self.x)
 
         if group == 'ball:bbl':
             self.on_ground = True
+            self.y = other.y + 16
