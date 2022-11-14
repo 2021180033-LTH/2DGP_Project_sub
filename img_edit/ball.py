@@ -61,8 +61,6 @@ class RUN:
     def do(self):
         self.frame = 0
         self.x += self.dir * RUN_SPEED_PPM * game_framework.frame_time
-        self.x = clamp(0, self.x, 800)
-
 
         if self.jump:
             self.jump_func()
@@ -140,9 +138,32 @@ class Ball:
         if group == 'ball:star':
             self.cur_state.enter(IDLE, None)
 
-        if group == 'ball:ground':
+        if group == 'ball:ground_f':
             self.on_ground = True
-            self.y = other.y + 20
+            if self.x <= other.x - 275:
+                self.x = max(other.x - 275, self.x)
+            if other.x - 275 < self.x < other.x + 275:
+                self.y = other.y + 20
+            if self.x >= other.x + 275:
+                self.x = min(other.x + 275, self.x)
+
+        if group == 'ball:ground_h':
+            self.on_ground = True
+            if self.x <= other.x - 137.5:
+                self.x = max(other.x - 137.5, self.x)
+            if other.x - 137.5 < self.x < other.x + 137.5:
+                self.y = other.y + 20
+            if self.x >= other.x + 137.5:
+                self.x = min(other.x + 137.5, self.x)
+
+        if group == 'ball:ground_q':
+            self.on_ground = True
+            if self.x <= other.x - 62.5:
+                self.x = max(other.x - 62.5, self.x)
+            if other.x - 62.5 < self.x < other.x + 62.5:
+                self.y = other.y + 20
+            if self.x >= other.x + 62.5:
+                self.x = min(other.x + 62.5, self.x)
 
         if group == 'ball:wall':
             if self.x > other.x:
