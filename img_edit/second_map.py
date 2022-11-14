@@ -1,7 +1,7 @@
 from pico2d import *
 import game_framework
 import game_world
-import third_map
+import clear_state_2
 from map2 import Vertex_h
 from map2 import Vertex_q
 from map2 import Vertical
@@ -56,8 +56,8 @@ def enter():
     game_world.add_objects(vertical, 0)
 
     game_world.add_collision_group(ball, star, 'ball:star')
-    game_world.add_collision_group(ball, vertex_q, 'ball:ground')
-    game_world.add_collision_group(ball, vertex_h, 'ball:ground')
+    game_world.add_collision_group(ball, vertex_q, 'ball:ground_q')
+    game_world.add_collision_group(ball, vertex_h, 'ball:ground_h')
     game_world.add_collision_group(ball, vertical, 'ball:wall')
 
 
@@ -70,7 +70,7 @@ def update():
         game_object.update()
 
     if star.num == 1:
-        game_framework.change_state(third_map)
+        game_framework.change_state(clear_state_2)
 
     for a, b, group in game_world.all_collision_pairs():
         if collide(a, b):

@@ -1,7 +1,7 @@
 from pico2d import *
 import game_framework
 import game_world
-import title_state
+import clear_state_3
 
 from map3 import Vertex_q
 from map3 import Vertex_h
@@ -32,8 +32,6 @@ def handle_events():
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.quit()
-        elif stars[3].num == 1:
-            game_framework.change_state(title_state)
         elif [spines[i].ifhit for i in range(4)] == 1:
             pass
         else:
@@ -59,7 +57,7 @@ def enter():
 
     bbls = [Bb() for i in range(5)]
     bbls[0].x, bbls[0].y = 170, 500
-    bbls[1].x, bbls[1].y = 660, 370
+    bbls[1].x, bbls[1].y = 570, 370
     bbls[2].x, bbls[2].y = 490, 200
     bbls[3].x, bbls[3].y = 525, 75
     bbls[4].x, bbls[4].y = 610, 50
@@ -89,8 +87,8 @@ def enter():
     game_world.add_collision_group(ball, stars, 'ball:star')
     game_world.add_collision_group(ball, bbls, 'ball:bbl')
     game_world.add_collision_group(ball, spines, 'ball:spine')
-    game_world.add_collision_group(ball, vertex_q, 'ball:ground')
-    game_world.add_collision_group(ball, vertex_h, 'ball:ground')
+    game_world.add_collision_group(ball, vertex_q, 'ball:ground_q')
+    game_world.add_collision_group(ball, vertex_h, 'ball:ground_h')
     game_world.add_collision_group(ball, vertical, 'ball:wall')
 
 
@@ -101,6 +99,9 @@ def exit():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+
+    if stars[3].num == 1:
+        game_framework.change_state(clear_state_3)
 
     for a, b, group in game_world.all_collision_pairs():
         if collide(a, b):
