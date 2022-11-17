@@ -22,4 +22,5 @@ class Bb:
 
     def handle_collision(self, other, group):
         if group == 'ball:bbl':
+            game_world.remove_collision_object(self)
             game_world.remove_object(self)

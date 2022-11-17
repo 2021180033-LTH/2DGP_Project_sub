@@ -101,6 +101,9 @@ def update():
         game_object.update()
 
     if stars[3].num == 1:
+        for game_object in game_world.all_objects():
+            game_world.remove_collision_object(game_object)
+            game_world.remove_object(game_object)
         game_framework.change_state(clear_state_3)
 
     for a, b, group in game_world.all_collision_pairs():
