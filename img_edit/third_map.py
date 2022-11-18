@@ -55,12 +55,11 @@ def enter():
     stars[2].x_st, stars[2].y_st = 325, 155
     stars[3].x_st, stars[3].y_st = 750, 50
 
-    bbls = [Bb() for i in range(5)]
+    bbls = [Bb() for i in range(4)]
     bbls[0].x, bbls[0].y = 170, 500
-    bbls[1].x, bbls[1].y = 570, 370
-    bbls[2].x, bbls[2].y = 490, 200
-    bbls[3].x, bbls[3].y = 525, 75
-    bbls[4].x, bbls[4].y = 610, 50
+    bbls[1].x, bbls[1].y = 490, 200
+    bbls[2].x, bbls[2].y = 525, 75
+    bbls[3].x, bbls[3].y = 610, 50
 
     vertex_h = [Vertex_h() for i in range(3)]
     vertex_h[0].x, vertex_h[0].y = 326, 400
