@@ -203,7 +203,6 @@ class Ball:
                 self.x = other.x + 24
             else:
                 self.x = min(other.x - 24, self.x)
-
         if group == 'ball:bbl':
             if other.x - 16 <= self.x <= other.x + 16:
                 self.on_ground = True
