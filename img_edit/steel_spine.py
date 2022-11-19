@@ -1,8 +1,4 @@
 from pico2d import *
-import game_world
-import game_framework
-import third_map
-from ball import Ball
 
 
 class Spine:

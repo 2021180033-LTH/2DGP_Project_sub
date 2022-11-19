@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import game_world
+import restart_3
 import clear_state_3
 
 from map3 import Vertex_q
@@ -32,8 +33,6 @@ def handle_events():
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.quit()
-        elif [spines[i].ifhit for i in range(4)] == 1:
-            pass
         else:
             ball.handle_event(event)
 
@@ -44,25 +43,25 @@ def enter():
     ball.x, ball.y = 50, 490
 
     spines = [Spine() for i in range(4)]
-    spines[0].x_spi, spines[0].y_spi = 140, 469
+    spines[0].x_spi, spines[0].y_spi = 140, 439
     spines[1].x_spi, spines[1].y_spi = 172, 439
     spines[2].x_spi, spines[2].y_spi = 478, 375
-    spines[3].x_spi, spines[3].y_spi = 508, 352
+    spines[3].x_spi, spines[3].y_spi = 508, 375
 
     stars = [Star() for i in range(4)]
-    stars[0].x_st, stars[0].y_st = 325, 430
+    stars[0].x_st, stars[0].y_st = 325, 450
     stars[1].x_st, stars[1].y_st = 760, 280
     stars[2].x_st, stars[2].y_st = 325, 155
     stars[3].x_st, stars[3].y_st = 750, 50
 
     bbls = [Bb() for i in range(4)]
-    bbls[0].x, bbls[0].y = 170, 500
-    bbls[1].x, bbls[1].y = 490, 200
+    bbls[0].x, bbls[0].y = 156, 500
+    bbls[1].x, bbls[1].y = 493, 413
     bbls[2].x, bbls[2].y = 525, 75
     bbls[3].x, bbls[3].y = 610, 50
 
     vertex_h = [Vertex_h() for i in range(3)]
-    vertex_h[0].x, vertex_h[0].y = 326, 400
+    vertex_h[0].x, vertex_h[0].y = 326, 413
     vertex_h[1].x, vertex_h[1].y = 665, 250
     vertex_h[2].x, vertex_h[2].y = 325, 125
 
@@ -104,6 +103,18 @@ def update():
             game_world.remove_collision_object(game_object)
             game_world.remove_object(game_object)
         game_framework.change_state(clear_state_3)
+
+    if spines[0].ifhit == 1 or spines[1].ifhit == 1 or spines[2].ifhit == 1 or spines[3].ifhit == 1:
+        for game_object in game_world.all_objects():
+            game_world.remove_collision_object(game_object)
+            game_world.remove_object(game_object)
+        game_framework.change_state(restart_3)
+
+    if ball.x > 800 or ball.x < 0 or ball.y < 0:
+        for game_object in game_world.all_objects():
+            game_world.remove_collision_object(game_object)
+            game_world.remove_object(game_object)
+        game_framework.change_state(restart_3)
 
     for a, b, group in game_world.all_collision_pairs():
         if collide(a, b):

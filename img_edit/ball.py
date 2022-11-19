@@ -68,45 +68,44 @@ class RUN:
                 self.jump = False
                 self.y_velocity = self.jump_height
 
-        if not self.jump or self.on_ground:
-            self.goto_fall()
+        # if not self.jump or self.on_ground:
+        #     self.goto_fall()
 
     def draw(self):
         self.image.clip_draw(self.frame * 100, 0, 25, 25, self.x, self.y)
         draw_rectangle(*self.get_bb())
 
 
-class FALL:
-    def enter(self, event):
-        print('ENTER FALL')
-        if event == RD:
-            self.dir += 1
-        if event == RU:
-            self.dir -= 1
-        if event == LD:
-            self.dir -= 1
-        if event == LU:
-            self.dir += 1
-
-    def exit(self):
-        print('EXIT FALL')
-
-    def do(self):
-        self.frame = 0
-        self.x += self.dir * RUN_SPEED_PPM * game_framework.frame_time
-
-        if not self.on_ground:
-            self.y -= self.y_velocity
-
-    def draw(self):
-        self.image.clip_draw(self.frame * 100, 0, 25, 25, self.x, self.y)
-        draw_rectangle(*self.get_bb())
+# class FALL:
+#     def enter(self, event):
+#         print('ENTER FALL')
+#         if event == RD:
+#             self.dir += 1
+#         if event == RU:
+#             self.dir -= 1
+#         if event == LD:
+#             self.dir -= 1
+#         if event == LU:
+#             self.dir += 1
+#
+#     def exit(self):
+#         print('EXIT FALL')
+#
+#     def do(self):
+#         self.frame = 0
+#         self.x += self.dir * RUN_SPEED_PPM * game_framework.frame_time
+#
+#         if not self.on_ground:
+#             self.y -= self.y_velocity
+#
+#     def draw(self):
+#         self.image.clip_draw(self.frame * 100, 0, 25, 25, self.x, self.y)
+#         draw_rectangle(*self.get_bb())
 
 
 next_state = {
-    IDLE: {RD: RUN, LD: RUN, RU: RUN, LU: RUN, UD: RUN, UU: RUN, FL: FALL},
-    RUN: {RD: IDLE, RU: IDLE, LD: IDLE, LU: IDLE, UU: RUN, UD: RUN, FL: FALL},
-    FALL: {RD: RUN, LD: RUN, RU: RUN, LU: RUN, UD: RUN, UU: RUN, FL: FALL}
+    IDLE: {RD: RUN, LD: RUN, RU: RUN, LU: RUN, UD: RUN, UU: RUN},
+    RUN: {RD: IDLE, RU: IDLE, LD: IDLE, LU: IDLE, UU: RUN, UD: RUN}
 }
 
 
@@ -157,8 +156,8 @@ class Ball:
     def add_event(self, event):
         self.event_q.insert(0, event)
 
-    def goto_fall(self):
-        self.add_event(FL)
+    # def goto_fall(self):
+    #     self.add_event(FL)
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
@@ -174,11 +173,11 @@ class Ball:
 
         if group == 'ball:ground_f':
             self.on_ground = True
-            if self.x <= other.x:
+            if self.x <= other.x - 275:
                 self.x = max(other.x - 275, self.x) - 12
-            if self.x >= other.x:
+            if self.x >= other.x + 275:
                 self.x = min(other.x + 275, self.x) + 12
-            if other.x < self.x < other.x:
+            if other.x - 275 < self.x < other.x + 275:
                 self.y = other.y + 20
 
         if group == 'ball:ground_h':
@@ -196,7 +195,7 @@ class Ball:
                 self.x = max(other.x - 62.5, self.x) - 12
             if self.x > other.x + 62.5:
                 self.x = min(other.x + 62.5, self.x) + 12
-            if other.x <= other.x - 62.5 <= other.x + 62.5:
+            if other.x - 62.5 <= self.x <= other.x + 62.5:
                 self.y = other.y + 20
 
         if group == 'ball:wall':
@@ -206,5 +205,6 @@ class Ball:
                 self.x = min(other.x - 24, self.x)
 
         if group == 'ball:bbl':
-            self.on_ground = True
-            self.y = other.y + 16
+            if other.x - 16 <= self.x <= other.x + 16:
+                self.on_ground = True
+                self.y = other.y + 16
