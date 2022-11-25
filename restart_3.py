@@ -1,10 +1,12 @@
 from pico2d import *
 import game_framework
 import game_world
-from clear import Clear
-import third_map
+from count import Three
+import restart_2
 
-clear = None
+three = None
+two = None
+one = None
 
 
 def handle_events():
@@ -14,16 +16,15 @@ def handle_events():
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.quit()
-        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
-            game_framework.change_state(third_map)
+
 
 
 def enter():
-    global clear
+    global three, two, one
 
-    clear = Clear()
+    three = Three()
 
-    game_world.add_object(clear, 0)
+    game_world.add_object(three, 2)
 
 
 def exit():
@@ -33,6 +34,10 @@ def exit():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+
+    delay(1)
+    game_world.remove_object(three)
+    game_framework.change_state(restart_2)
 
 
 def draw_world():

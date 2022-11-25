@@ -75,9 +75,9 @@ def enter():
 
     running = True
     game_world.add_object(ball, 1)
-    game_world.add_objects(stars, 1)
-    game_world.add_objects(spines, 1)
-    game_world.add_objects(bbls, 1)
+    game_world.add_objects(stars, 2)
+    game_world.add_objects(spines, 0)
+    game_world.add_objects(bbls, 0)
     game_world.add_objects(vertex_h, 0)
     game_world.add_objects(vertex_q, 0)
     game_world.add_objects(vertical, 0)
@@ -104,7 +104,7 @@ def update():
             game_world.remove_object(game_object)
         game_framework.change_state(clear_state_3)
 
-    if spines[0].ifhit == 1 or spines[1].ifhit == 1 or spines[2].ifhit == 1 or spines[3].ifhit == 1:
+    if spines[0].ifhit or spines[1].ifhit or spines[2].ifhit or spines[3].ifhit:
         for game_object in game_world.all_objects():
             game_world.remove_collision_object(game_object)
             game_world.remove_object(game_object)
