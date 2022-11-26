@@ -24,6 +24,7 @@ class IDLE:
         print('ENTER IDLE')
         self.dir = 0
         self.isjump = False
+        self.on_ground = False
 
     def exit(self):
         print('EXIT IDLE')
@@ -54,6 +55,8 @@ class RUN:
         if event == LU:
             self.dir += 1
 
+        self.on_ground = False
+
     def exit(self):
         print('EXIT RUN')
 
@@ -65,9 +68,6 @@ class RUN:
             if self.on_ground:
                 self.jump = False
                 self.y_velocity = self.jump_height
-
-        # if not self.jump or self.on_ground:
-        #     self.goto_fall()
 
     def draw(self):
         self.image.clip_draw(0, 0, 25, 25, self.x, self.y)
@@ -122,6 +122,7 @@ class Ball:
         self.mass = 10
         self.jump_height = 4
         self.gravity = 0.05
+        self.fall_speed = self.gravity
         self.y_velocity = self.jump_height
 
         self.event_q = []
@@ -143,18 +144,22 @@ class Ball:
                 print('ERROR:', self.cur_state, event_name[event])
             self.cur_state.enter(self, event)
 
+        if self.on_ground is False and self.jump is False:
+            self.fall_func()
+
     def jump_func(self):
         self.y += self.y_velocity * JUMP_SPEED_PPM * game_framework.frame_time
         self.y_velocity -= self.gravity
+
+    def fall_func(self):
+        self.y -= self.fall_speed * JUMP_SPEED_PPM * game_framework.frame_time
+        self.fall_speed += self.gravity
 
     def draw(self):
         self.cur_state.draw(self)
 
     def add_event(self, event):
         self.event_q.insert(0, event)
-
-    # def goto_fall(self):
-    #     self.add_event(FL)
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
@@ -170,20 +175,20 @@ class Ball:
 
         if group == 'ball:ground_f':
             self.on_ground = True
-            if self.x <= other.x - 275:
+            if self.x < other.x - 275:
                 self.x = max(other.x - 275, self.x) - 12
-            if self.x >= other.x + 275:
+            if self.x > other.x + 275:
                 self.x = min(other.x + 275, self.x) + 12
-            if other.x - 275 < self.x < other.x + 275:
+            if other.x - 275 <= self.x <= other.x + 275:
                 self.y = other.y + 20
 
         if group == 'ball:ground_h':
             self.on_ground = True
-            if self.x <= other.x - 137.5:
+            if self.x < other.x - 137.5:
                 self.x = max(other.x - 137.5, self.x) - 12
-            if self.x >= other.x + 137.5:
+            if self.x > other.x + 137.5:
                 self.x = min(other.x + 137.5, self.x) + 12
-            if other.x - 137.5 < self.x < other.x + 137.5:
+            if other.x - 137.5 <= self.x <= other.x + 137.5:
                 self.y = other.y + 20
 
         if group == 'ball:ground_q':
@@ -200,7 +205,8 @@ class Ball:
                 self.x = other.x + 24
             else:
                 self.x = min(other.x - 24, self.x)
+
         if group == 'ball:bbl':
+            self.on_ground = True
             if other.x - 16 <= self.x <= other.x + 16:
-                self.on_ground = True
                 self.y = other.y + 16
