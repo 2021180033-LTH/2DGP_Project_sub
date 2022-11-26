@@ -1,7 +1,7 @@
 from pico2d import *
 import game_framework
 import game_world
-import restart_3
+import restart_3_state
 import clear_state_3
 
 from map3 import Vertex_q
@@ -108,13 +108,13 @@ def update():
         for game_object in game_world.all_objects():
             game_world.remove_collision_object(game_object)
             game_world.remove_object(game_object)
-        game_framework.change_state(restart_3)
+        game_framework.change_state(restart_3_state)
 
     if ball.x > 800 or ball.x < 0 or ball.y < 0:
         for game_object in game_world.all_objects():
             game_world.remove_collision_object(game_object)
             game_world.remove_object(game_object)
-        game_framework.change_state(restart_3)
+        game_framework.change_state(restart_3_state)
 
     for a, b, group in game_world.all_collision_pairs():
         if collide(a, b):

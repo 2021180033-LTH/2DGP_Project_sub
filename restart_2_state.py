@@ -1,12 +1,10 @@
 from pico2d import *
 import game_framework
 import game_world
-from count import Three
-import restart_2
+from count import Two
+import restart_1_state
 
-three = None
 two = None
-one = None
 
 
 def handle_events():
@@ -20,11 +18,11 @@ def handle_events():
 
 
 def enter():
-    global three, two, one
+    global two
 
-    three = Three()
+    two = Two()
 
-    game_world.add_object(three, 2)
+    game_world.add_object(two, 0)
 
 
 def exit():
@@ -36,8 +34,8 @@ def update():
         game_object.update()
 
     delay(1)
-    game_world.remove_object(three)
-    game_framework.change_state(restart_2)
+    game_world.remove_object(two)
+    game_framework.change_state(restart_1_state)
 
 
 def draw_world():

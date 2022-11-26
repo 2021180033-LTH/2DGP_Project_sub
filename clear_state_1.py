@@ -2,7 +2,7 @@ from pico2d import *
 import game_framework
 import game_world
 from clear import Clear
-import second_map
+import second_map_state
 
 clear = None
 
@@ -15,7 +15,7 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
-            game_framework.change_state(second_map)
+            game_framework.change_state(second_map_state)
 
 
 def enter():

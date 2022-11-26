@@ -1,6 +1,6 @@
 from pico2d import *
 import game_framework
-import first_map
+import first_map_state
 
 image = None
 
