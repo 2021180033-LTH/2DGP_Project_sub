@@ -3,7 +3,7 @@ import game_world
 
 class Star:
     def __init__(self):
-        self.num = 0
+        self.get = False
         self.image4 = load_image("image/star.png")
         self.x_st, self.y_st = 0, 0
 
@@ -20,5 +20,5 @@ class Star:
     def handle_collision(self, other, group):
         if group == 'ball:star':
             game_world.remove_object(self)
-            self.num += 1
+            self.get = True
 

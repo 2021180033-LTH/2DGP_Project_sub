@@ -2,11 +2,13 @@ from pico2d import *
 import game_framework
 import game_world
 import clear_state_2
-from map2 import Vertex_h
 from map2 import Vertex_q
+from breakable_block import Bb
 from map2 import Vertical
 from ball import Ball
 from star import Star
+import restart_3_state
+from count import One
 
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
@@ -14,10 +16,10 @@ WINDOW_HEIGHT = 600
 running = True
 ball = None
 second_map = None
-vertex_h = None
 vertex_q = None
 vertical = None
 star = None
+breakable = None
 
 
 def handle_events():
@@ -32,14 +34,19 @@ def handle_events():
 
 
 def enter():
-    global ball, running, vertex_q, vertex_h, vertical, star
+    global ball, running, vertex_q, vertical, star, breakable
     ball = Ball()
     ball.x, ball.y = 170, 346
     star = Star()
     star.x_st, star.y_st = 620, 360
     running = True
 
-    vertex_h = Vertex_h()
+    breakable = [Bb() for i in range(5)]
+    breakable[0].x, breakable[0].y = 300, 304
+    breakable[1].x, breakable[1].y = 350, 304
+    breakable[2].x, breakable[2].y = 400, 304
+    breakable[3].x, breakable[3].y = 450, 304
+    breakable[4].x, breakable[4].y = 500, 304
 
     vertex_q = [Vertex_q() for i in range(2)]
     vertex_q[0].x, vertex_q[0].y = 200, 327
@@ -52,12 +59,12 @@ def enter():
     game_world.add_object(ball, 1)
     game_world.add_object(star, 1)
     game_world.add_objects(vertex_q, 0)
-    game_world.add_object(vertex_h, 0)
+    game_world.add_objects(breakable, 0)
     game_world.add_objects(vertical, 0)
 
     game_world.add_collision_group(ball, star, 'ball:star')
     game_world.add_collision_group(ball, vertex_q, 'ball:ground_q')
-    game_world.add_collision_group(ball, vertex_h, 'ball:ground_h')
+    game_world.add_collision_group(ball, breakable, 'ball:bbl')
     game_world.add_collision_group(ball, vertical, 'ball:wall')
 
 
@@ -69,11 +76,18 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    if star.num == 1:
+    if star.get is True:
         for game_object in game_world.all_objects():
             game_world.remove_collision_object(game_object)
             game_world.remove_object(game_object)
         game_framework.change_state(clear_state_2)
+
+    if ball.x > 800 or ball.x < 0 or ball.y < 0:
+        for game_object in game_world.all_objects():
+            game_world.remove_collision_object(game_object)
+            game_world.remove_object(game_object)
+        One.fromwhere = 2
+        game_framework.push_state(restart_3_state)
 
     for a, b, group in game_world.all_collision_pairs():
         if collide(a, b):

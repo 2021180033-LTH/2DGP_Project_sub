@@ -3,6 +3,7 @@ import game_framework
 import game_world
 from count import One
 import third_map_state
+import second_map_state
 
 one = None
 
@@ -35,7 +36,10 @@ def update():
 
     delay(1)
     game_world.remove_object(one)
-    game_framework.change_state(third_map_state)
+    if One.fromwhere is 2:
+        game_framework.change_state(second_map_state)
+    if One.fromwhere is 3:
+        game_framework.change_state(third_map_state)
 
 
 def draw_world():

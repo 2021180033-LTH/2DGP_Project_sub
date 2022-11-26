@@ -38,6 +38,7 @@ class Two:
 
 class One:
     image = None
+    fromwhere = 0
 
     def __init__(self):
         if One.image is None:

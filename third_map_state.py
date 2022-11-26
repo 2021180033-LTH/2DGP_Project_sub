@@ -98,7 +98,7 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    if stars[3].num == 1:
+    if stars[3].get is True:
         for game_object in game_world.all_objects():
             game_world.remove_collision_object(game_object)
             game_world.remove_object(game_object)
@@ -146,10 +146,14 @@ def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
-    if left_a > right_b: return False
-    if right_a < left_b: return False
-    if top_a < bottom_b: return False
-    if bottom_a > top_b: return False
+    if left_a > right_b:
+        return False
+    if right_a < left_b:
+        return False
+    if top_a < bottom_b:
+        return False
+    if bottom_a > top_b:
+        return False
 
     return True
 
