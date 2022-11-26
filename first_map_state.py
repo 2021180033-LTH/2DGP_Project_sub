@@ -62,7 +62,7 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    if star.num == 1:
+    if star.get is True:
         for game_object in game_world.all_objects():
             game_world.remove_collision_object(game_object)
             game_world.remove_object(game_object)
