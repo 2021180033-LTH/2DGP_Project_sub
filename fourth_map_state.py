@@ -7,6 +7,7 @@ from clear import Clear
 
 from count import One
 from map import Vertical
+from map import Vertex_q
 from ball import Ball
 from star import Star
 
@@ -18,6 +19,7 @@ ball = None
 fourth_map = None
 star = []
 vertical = []
+vertex_q = []
 
 
 def handle_events():
@@ -32,24 +34,28 @@ def handle_events():
 
 
 def enter():
-    global ball, running, star, vertical
+    global ball, running, star, vertical, vertex_q
     ball = Ball()
     ball.x, ball.y = 400, 600
 
     star = Star()
-    star.x_st, star.y_st = 400, 250
+    star.x_st, star.y_st = 400, 135
 
-    vertical = [Vertical() for i in range(2)]
-    vertical[0].x, vertical[0].y = 400, 450
-    vertical[1].x, vertical[1].y = 400, 60
+    vertex_q = Vertex_q()
+    vertex_q.x, vertex_q.y = 400, 550
+
+    vertical = Vertical()
+    vertical.x, vertical.y = 400, 60
+
     running = True
     game_world.add_object(ball, 1)
     game_world.add_object(star, 2)
-    game_world.add_objects(vertical, 0)
+    game_world.add_object(vertex_q, 0)
+    game_world.add_object(vertical, 0)
 
     game_world.add_collision_group(ball, star, 'ball:star')
     game_world.add_collision_group(ball, vertical, 'ball:wall')
-
+    game_world.add_collision_group(ball, vertex_q, 'ball:ground_q')
 
 def exit():
     game_world.clear()

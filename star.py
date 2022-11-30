@@ -15,7 +15,7 @@ class Star:
         pass
 
     def get_bb(self):
-        return self.x_st - 16, self.y_st - 16, self.x_st + 16, self.y_st + 16
+        return self.x_st - 15, self.y_st - 15, self.x_st + 15, self.y_st + 15
 
     def handle_collision(self, other, group):
         if group == 'ball:star':
