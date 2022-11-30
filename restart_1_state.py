@@ -2,8 +2,9 @@ from pico2d import *
 import game_framework
 import game_world
 from count import One
-import third_map_state
 import second_map_state
+import third_map_state
+import fourth_map_state
 
 one = None
 
@@ -40,6 +41,8 @@ def update():
         game_framework.change_state(second_map_state)
     if One.fromwhere is 3:
         game_framework.change_state(third_map_state)
+    if One.fromwhere is 4:
+        game_framework.change_state(fourth_map_state)
 
 
 def draw_world():

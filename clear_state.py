@@ -5,6 +5,7 @@ from clear import Clear
 import title_state
 import second_map_state
 import third_map_state
+import fourth_map_state
 
 clear = None
 
@@ -22,6 +23,8 @@ def handle_events():
             if Clear.fromwhere == 2:
                 game_framework.change_state(third_map_state)
             if Clear.fromwhere == 3:
+                game_framework.change_state(fourth_map_state)
+            if Clear.fromwhere == 4:
                 game_framework.change_state(title_state)
 
 
