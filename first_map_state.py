@@ -3,8 +3,8 @@ import game_framework
 import game_world
 import clear_state
 from clear import Clear
-from map1 import Vertex
-from map1 import Vertical
+from map import Vertex
+from map import Vertical
 from ball import Ball
 from star import Star
 
@@ -36,6 +36,7 @@ def enter():
     ball.x, ball.y = 165, 200
 
     vertex = Vertex()
+    vertex.x, vertex.y = 400, 180
 
     vertical = [Vertical() for i in range(2)]
     vertical[0].x, vertical[0].y = 138, 253

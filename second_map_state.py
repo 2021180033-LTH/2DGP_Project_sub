@@ -3,9 +3,9 @@ import game_framework
 import game_world
 import clear_state
 from clear import Clear
-from map2 import Vertex_q
+from map import Vertex_q
 from breakable_block import Bb
-from map2 import Vertical
+from map import Vertical
 from ball import Ball
 from star import Star
 import restart_3_state
@@ -16,7 +16,6 @@ WINDOW_HEIGHT = 600
 
 running = True
 ball = None
-second_map = None
 vertex_q = None
 vertical = None
 star = None

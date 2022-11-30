@@ -6,9 +6,9 @@ import clear_state
 from clear import Clear
 
 from count import One
-from map3 import Vertex_q
-from map3 import Vertex_h
-from map3 import Vertical
+from map import Vertex_q
+from map import Vertex_h
+from map import Vertical
 from ball import Ball
 from star import Star
 from steel_spine import Spine
@@ -19,7 +19,6 @@ WINDOW_HEIGHT = 600
 
 running = True
 ball = None
-third_map = None
 stars = []
 spines = []
 bbls = []
@@ -40,7 +39,7 @@ def handle_events():
 
 
 def enter():
-    global ball, running, third_map, stars, spines, bbls, vertex_h, vertex_q, vertical
+    global ball, running, stars, spines, bbls, vertex_h, vertex_q, vertical
     ball = Ball()
     ball.x, ball.y = 50, 490
 
