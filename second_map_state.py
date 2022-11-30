@@ -1,7 +1,8 @@
 from pico2d import *
 import game_framework
 import game_world
-import clear_state_2
+import clear_state
+from clear import Clear
 from map2 import Vertex_q
 from breakable_block import Bb
 from map2 import Vertical
@@ -79,15 +80,16 @@ def update():
     if star.get is True:
         for game_object in game_world.all_objects():
             game_world.remove_collision_object(game_object)
-            game_world.remove_object(game_object)
-        game_framework.change_state(clear_state_2)
+        game_world.clear()
+        Clear.fromwhere = 2
+        game_framework.change_state(clear_state)
 
     if ball.x > 800 or ball.x < 0 or ball.y < 0:
         for game_object in game_world.all_objects():
             game_world.remove_collision_object(game_object)
-            game_world.remove_object(game_object)
+        game_world.clear()
         One.fromwhere = 2
-        game_framework.push_state(restart_3_state)
+        game_framework.change_state(restart_3_state)
 
     for a, b, group in game_world.all_collision_pairs():
         if collide(a, b):

@@ -35,7 +35,7 @@ def update():
         game_object.update()
 
     delay(1)
-    game_world.remove_object(one)
+    game_world.clear()
     if One.fromwhere is 2:
         game_framework.change_state(second_map_state)
     if One.fromwhere is 3:

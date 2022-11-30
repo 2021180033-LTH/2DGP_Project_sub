@@ -1,7 +1,8 @@
 from pico2d import *
 import game_framework
 import game_world
-import clear_state_1
+import clear_state
+from clear import Clear
 from map1 import Vertex
 from map1 import Vertical
 from ball import Ball
@@ -66,7 +67,8 @@ def update():
         for game_object in game_world.all_objects():
             game_world.remove_collision_object(game_object)
             game_world.remove_object(game_object)
-        game_framework.change_state(clear_state_1)
+        Clear.fromwhere = 1
+        game_framework.change_state(clear_state)
 
     for a, b, group in game_world.all_collision_pairs():
         if collide(a, b):

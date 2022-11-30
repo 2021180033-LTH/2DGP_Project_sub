@@ -2,8 +2,10 @@ from pico2d import *
 import game_framework
 import game_world
 import restart_3_state
-import clear_state_3
+import clear_state
+from clear import Clear
 
+from count import One
 from map3 import Vertex_q
 from map3 import Vertex_h
 from map3 import Vertical
@@ -101,19 +103,22 @@ def update():
     if stars[3].get is True:
         for game_object in game_world.all_objects():
             game_world.remove_collision_object(game_object)
-            game_world.remove_object(game_object)
-        game_framework.change_state(clear_state_3)
+        game_world.clear()
+        Clear.fromwhere = 3
+        game_framework.change_state(clear_state)
 
     if spines[0].ifhit or spines[1].ifhit or spines[2].ifhit or spines[3].ifhit:
         for game_object in game_world.all_objects():
             game_world.remove_collision_object(game_object)
-            game_world.remove_object(game_object)
+        One.fromwhere = 3
+        game_world.clear()
         game_framework.change_state(restart_3_state)
 
     if ball.x > 800 or ball.x < 0 or ball.y < 0:
         for game_object in game_world.all_objects():
             game_world.remove_collision_object(game_object)
-            game_world.remove_object(game_object)
+        game_world.clear()
+        One.fromwhere = 3
         game_framework.change_state(restart_3_state)
 
     for a, b, group in game_world.all_collision_pairs():

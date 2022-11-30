@@ -36,7 +36,7 @@ def update():
         game_object.update()
 
     delay(1)
-    game_world.remove_object(three)
+    game_world.clear()
     game_framework.change_state(restart_2_state)
 
 
