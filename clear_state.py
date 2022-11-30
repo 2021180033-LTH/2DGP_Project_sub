@@ -2,6 +2,8 @@ from pico2d import *
 import game_framework
 import game_world
 from clear import Clear
+import title_state
+import second_map_state
 import third_map_state
 
 clear = None
@@ -15,7 +17,12 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
-            game_framework.change_state(third_map_state)
+            if Clear.fromwhere == 1:
+                game_framework.change_state(second_map_state)
+            if Clear.fromwhere == 2:
+                game_framework.change_state(third_map_state)
+            if Clear.fromwhere == 3:
+                game_framework.change_state(title_state)
 
 
 def enter():
