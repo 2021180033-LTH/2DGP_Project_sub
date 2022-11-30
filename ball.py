@@ -201,10 +201,14 @@ class Ball:
                 self.y = other.y + 20
 
         if group == 'ball:wall':
-            if self.x > other.x:
+            self.on_ground = True
+            if self.x > other.x + 24:
                 self.x = other.x + 24
+            elif self.x < other.x - 24:
+                self.x = other.x - 24
             else:
-                self.x = min(other.x - 24, self.x)
+                self.x = clamp(other.x - 24, self.x, other.x + 24)
+                self.y = other.y + 70
 
         if group == 'ball:bbl':
             self.on_ground = True
