@@ -62,6 +62,7 @@ class RUN:
 
     def do(self):
         self.x += self.dir * RUN_SPEED_PPM * game_framework.frame_time
+        self.x = clamp(0, self.x, 800)
 
         if self.jump:
             self.jump_func()
@@ -72,33 +73,6 @@ class RUN:
     def draw(self):
         self.image.clip_draw(0, 0, 25, 25, self.x, self.y)
         draw_rectangle(*self.get_bb())
-
-
-# class FALL:
-#     def enter(self, event):
-#         print('ENTER FALL')
-#         if event == RD:
-#             self.dir += 1
-#         if event == RU:
-#             self.dir -= 1
-#         if event == LD:
-#             self.dir -= 1
-#         if event == LU:
-#             self.dir += 1
-#
-#     def exit(self):
-#         print('EXIT FALL')
-#
-#     def do(self):
-#         self.frame = 0
-#         self.x += self.dir * RUN_SPEED_PPM * game_framework.frame_time
-#
-#         if not self.on_ground:
-#             self.y -= self.y_velocity
-#
-#     def draw(self):
-#         self.image.clip_draw(self.frame * 100, 0, 25, 25, self.x, self.y)
-#         draw_rectangle(*self.get_bb())
 
 
 next_state = {
@@ -175,6 +149,9 @@ class Ball:
 
         if group == 'ball:ground_f':
             self.on_ground = True
+            if self.y < other.y:
+                self.on_ground = False
+                self.y = max(other.y - 13, self.y)
             if self.x < other.x - 275:
                 self.x = max(other.x - 275, self.x) - 12
             if self.x > other.x + 275:
@@ -184,6 +161,9 @@ class Ball:
 
         if group == 'ball:ground_h':
             self.on_ground = True
+            if self.y < other.y:
+                self.on_ground = False
+                self.y = max(other.y - 13, self.y)
             if self.x < other.x - 137.5:
                 self.x = max(other.x - 137.5, self.x) - 12
             if self.x > other.x + 137.5:
@@ -193,6 +173,9 @@ class Ball:
 
         if group == 'ball:ground_q':
             self.on_ground = True
+            if self.y < other.y + 13:
+                self.on_ground = False
+                self.y = min(self.y, self.y)
             if self.x < other.x - 62.5:
                 self.x = max(other.x - 62.5, self.x) - 12
             if self.x > other.x + 62.5:
