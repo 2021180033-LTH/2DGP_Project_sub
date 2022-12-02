@@ -89,6 +89,10 @@ class Ball:
             Ball.image = load_image('image/ball.png')
         self.x, self.y = 0, 0
 
+        if Ball.jump_sound is None:
+            Ball.jump_sound = load_music('sound/jump.ogg')
+            Ball.jump_sound.set_volume(16)
+
         self.jump = False
         self.y_velocity = 2
         self.on_ground = False
@@ -124,6 +128,7 @@ class Ball:
     def jump_func(self):
         self.y += self.y_velocity * JUMP_SPEED_PPM * game_framework.frame_time
         self.y_velocity -= self.gravity
+        self.jump_sound.play()
 
     def fall_func(self):
         self.y -= self.fall_speed * JUMP_SPEED_PPM * game_framework.frame_time
@@ -145,7 +150,7 @@ class Ball:
 
     def handle_collision(self, other, group):
         if group == 'ball:star':
-            self.cur_state.enter(IDLE, None)
+            pass
 
         if group == 'ball:ground_f':
             self.on_ground = True

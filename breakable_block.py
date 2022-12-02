@@ -7,7 +7,9 @@ class Bb:
     def __init__(self):
         if Bb.image is None:
             Bb.image = load_image("image/breakable_block.png")
-
+        if Bb.sound is None:
+            Bb.sound = load_music('sound/pang.wav')
+            Bb.sound.set_volume(16)
         self.x, self.y = 0, 0
 
     def draw(self):
@@ -24,3 +26,4 @@ class Bb:
         if group == 'ball:bbl':
             game_world.remove_collision_object(self)
             game_world.remove_object(self)
+            self.sound.play()
