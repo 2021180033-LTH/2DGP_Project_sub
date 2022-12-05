@@ -31,7 +31,8 @@ class IDLE:
 
     def do(self):
         if not self.jump:
-            pass
+            if self.on_ground is False and self.jump is False:
+                self.fall_func()
         else:
             self.jump_func()
             if self.on_ground:
@@ -47,13 +48,13 @@ class RUN:
     def enter(self, event):
         print('ENTER RUN')
         if event == RD:
-            self.dir += 1
+            self.dir = 1
         if event == RU:
-            self.dir -= 1
+            self.dir = -1
         if event == LD:
-            self.dir -= 1
+            self.dir = -1
         if event == LU:
-            self.dir += 1
+            self.dir = 1
 
         self.on_ground = False
 
@@ -67,8 +68,12 @@ class RUN:
         if self.jump:
             self.jump_func()
             if self.on_ground:
+                self.jump_sound.play()
                 self.jump = False
                 self.y_velocity = self.jump_height
+
+        if self.on_ground is False and self.jump is False:
+            self.fall_func()
 
     def draw(self):
         self.image.clip_draw(0, 0, 25, 25, self.x, self.y)
@@ -83,6 +88,8 @@ next_state = {
 
 class Ball:
     image = None
+    jump_sound = None
+    die_sound = None
 
     def __init__(self):
         if Ball.image is None:
@@ -90,8 +97,12 @@ class Ball:
         self.x, self.y = 0, 0
 
         if Ball.jump_sound is None:
-            Ball.jump_sound = load_music('sound/jump.ogg')
+            Ball.jump_sound = load_music('sound/normalCollision.ogg')
             Ball.jump_sound.set_volume(16)
+
+        if Ball.die_sound is None:
+            Ball.die_sound = load_music('sound/die.ogg')
+            Ball.die_sound.set_volume(16)
 
         self.jump = False
         self.y_velocity = 2
@@ -122,13 +133,11 @@ class Ball:
                 print('ERROR:', self.cur_state, event_name[event])
             self.cur_state.enter(self, event)
 
-        if self.on_ground is False and self.jump is False:
-            self.fall_func()
+
 
     def jump_func(self):
         self.y += self.y_velocity * JUMP_SPEED_PPM * game_framework.frame_time
         self.y_velocity -= self.gravity
-        self.jump_sound.play()
 
     def fall_func(self):
         self.y -= self.fall_speed * JUMP_SPEED_PPM * game_framework.frame_time
