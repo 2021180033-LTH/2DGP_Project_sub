@@ -76,6 +76,7 @@ def update():
         for game_object in game_world.all_objects():
             game_world.remove_collision_object(game_object)
         game_world.clear()
+        ball.die_sound.play()
         One.fromwhere = 4
         game_framework.change_state(restart_3_state)
 

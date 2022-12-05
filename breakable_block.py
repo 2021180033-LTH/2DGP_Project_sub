@@ -4,6 +4,8 @@ import game_world
 
 class Bb:
     image = None
+    sound = None
+
     def __init__(self):
         if Bb.image is None:
             Bb.image = load_image("image/breakable_block.png")

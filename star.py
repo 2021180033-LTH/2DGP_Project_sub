@@ -2,6 +2,9 @@ from pico2d import *
 import game_world
 
 class Star:
+    image = None
+    sound = None
+
     def __init__(self):
         self.get = False
         if Star.image is None:

@@ -10,12 +10,12 @@ class Vertex:
             Vertex.image = load_image("image/vertex_steel_block.png")
 
         if Vertex.sound is None:
-            Vertex.sound = load_music('sound/normalCollision')
-            Vertex.sound.get_volume(16)
+            Vertex.sound = load_music('sound/normalCollision.ogg')
+            Vertex.sound.set_volume(16)
         self.x, self.y = 400, 180
 
     def draw(self):
-        self.image1.clip_draw(0, 0, 550, 25, self.x, self.y)
+        self.image.clip_draw(0, 0, 550, 25, self.x, self.y)
         draw_rectangle(*self.get_bb())
 
     def update(self):
@@ -26,7 +26,8 @@ class Vertex:
 
     def handle_collision(self, other, group):
         if group == 'ball:ground_f':
-            self.sound.play()
+            # self.sound.play()
+            pass
 
 class Vertex_h:
     image = None
@@ -36,8 +37,8 @@ class Vertex_h:
         if Vertex_h.image is None:
             Vertex_h.image = load_image('image/half_vertex_steel_block.png')
         if Vertex_h.sound is None:
-            Vertex_h.sound = load_music('sound/normalCollision')
-            Vertex_h.sound.get_volume(16)
+            Vertex_h.sound = load_music('sound/normalCollision.ogg')
+            Vertex_h.sound.set_volume(16)
         self.x, self.y = 0, 0
 
     def draw(self):
@@ -52,7 +53,8 @@ class Vertex_h:
 
     def handle_collision(self, other, group):
         if group == 'ball:ground_h':
-            self.sound.play()
+            # self.sound.play()
+            pass
 
 
 class Vertex_q:
@@ -63,8 +65,8 @@ class Vertex_q:
         if Vertex_q.image is None:
             Vertex_q.image = load_image('image/quarter_vertex_steel_block.png')
         if Vertex_q.sound is None:
-            Vertex_q.sound = load_music('sound/normalCollision')
-            Vertex_q.sound.get_volume(16)
+            Vertex_q.sound = load_music('sound/normalCollision.ogg')
+            Vertex_q.sound.set_volume(16)
         self.x, self.y = 0, 0
 
     def draw(self):
@@ -79,7 +81,8 @@ class Vertex_q:
 
     def handle_collision(self, other, group):
         if group == 'ball:ground_q':
-            self.sound.play()
+            # self.sound.play()
+            pass
 
 
 class Vertical:
@@ -90,8 +93,8 @@ class Vertical:
         if Vertical.image is None:
             Vertical.image = load_image('image/vertical_steel_block.png')
         if Vertical.sound is None:
-            Vertical.sound = load_music('sound/normalCollision')
-            Vertical.sound.get_volume(16)
+            Vertical.sound = load_music('sound/normalCollision.ogg')
+            Vertical.sound.set_volume(16)
 
         self.x, self.y = 0, 0
 
@@ -107,4 +110,5 @@ class Vertical:
 
     def handle_collision(self, other, group):
         if group == 'ball:wall':
-            self.sound.play()
+            # self.sound.play()
+            pass
